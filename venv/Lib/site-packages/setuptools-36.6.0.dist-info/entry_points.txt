@@ -11,6 +11,7 @@ build_clib = setuptools.command.build_clib:build_clib
 build_ext = setuptools.command.build_ext:build_ext
 build_py = setuptools.command.build_py:build_py
 develop = setuptools.command.develop:develop
+dist_info = setuptools.command.dist_info:dist_info
 easy_install = setuptools.command.easy_install:easy_install
 egg_info = setuptools.command.egg_info:egg_info
 install = setuptools.command.install:install
