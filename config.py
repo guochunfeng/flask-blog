@@ -11,16 +11,17 @@ class Config:
 	SQLALCHEMY_RECORD_QUERIES=True
 	FLASKY_SLOW_DB_QUERY_TIME=0.5
 	FLASKY_FOLLOWERS_PER_PAGE=20
-	@staticmethod
-	def init_app(app):
-		pass
-class DevelopmentConfig(Config):
 	DEBUG=True
 	MAIL_SERVER='smtp.qq.com'
 	MAIL_PORT=25
 	MAIL_USE_TLS=True
 	MAIL_USERNAME='632131247@qq.com'
 	MAIL_PASSWORD='118899Shi'
+	@staticmethod
+	def init_app(app):
+		pass
+class DevelopmentConfig(Config):
+
 	SQLALCHEMY_DATABASE_URI=os.environ.get('DEV_DATABASE_URI') or \
 		'sqlite:///'+os.path.join(basedir,'data-dev.sqlite')
 class TestingConfig(Config):
