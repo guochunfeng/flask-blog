@@ -39,10 +39,8 @@ Markdown==2.3.1
 MarkupSafe==0.23
 pathlib2==2.3.0
 pickleshare==0.7.4
-post==0.0.0
 prompt-toolkit==1.0.15
 psycopg2==2.7.3.2
-public==0.0.0
 Pygments==1.6
 python-dateutil==2.6.1
 python-editor==1.0.3
