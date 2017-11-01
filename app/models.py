@@ -145,7 +145,7 @@ class User(UserMixin,db.Model):
 			if not user.is_following(user):
 				user.follow(user)
 				db.session.add(user)
-				ab.session.commit()
+				db.session.commit()
 	@property
 	def followed_posts(self):
 		return Post.query.join(Follow,Follow.followed_id==Post.author_id)\
