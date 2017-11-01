@@ -244,7 +244,6 @@ class Alembic(db.Model):
 	@staticmethod
 	def clear_A():
 		for a in Alembic.query.all():
-			print a.version_num
 			db.session.delete(a)
 		db.session.commit()
 login_manager.anonymous_user=AnonymousUser
