@@ -10,6 +10,7 @@ coverage==3.7.1
 decorator==4.1.2
 dominate==2.3.1
 enum34==1.1.6
+ez-setup==0.9
 Flask==0.12
 Flask-Admin==1.5.0
 Flask-Bootstrap==3.0.3.1
@@ -22,7 +23,9 @@ Flask-PageDown==0.1.4
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.14.2
+foreman==0.9.7
 ForgeryPy==0.1
+futures==3.1.1
 get==0.0.0
 gunicorn==19.7.1
 html5lib==1.0b3
@@ -47,6 +50,7 @@ python-editor==1.0.3
 query-string==0.0.0
 request==0.0.0
 requests==2.1.0
+requests-futures==0.9.7
 scandir==1.6
 selenium==2.45.0
 setupfiles==0.0.50
