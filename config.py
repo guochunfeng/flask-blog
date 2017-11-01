@@ -62,5 +62,5 @@ class HerokuConfig(ProductionConfig):
 		app.logger.addHandler(file_handler)
 
 config={'development':DevelopmentConfig,'testing':TestingConfig,'production':ProductionConfig,
-'default':DevelopmentConfig，'heroku': HerokuConfig}
+'default':DevelopmentConfig,'heroku': HerokuConfig}
 
