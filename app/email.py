@@ -8,7 +8,6 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 def send_email(to, subject, template, **kwargs):
-    print '.....................'
     import crash_on_ipy 
     app = current_app._get_current_object()
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + ' ' + subject,
