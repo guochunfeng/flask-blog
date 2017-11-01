@@ -238,6 +238,15 @@ class AnonymousUser(AnonymousUserMixin):
 		return False
 	def is_administrator(self):
 		return False
+class Alembic(db.Model):
+	__tablename__ = 'alembic_version'
+	version_num = db.Column(db.String(32), primary_key=True, nullable=False)
+	@staticmethod
+	def clear_A():
+		for a in Alembic.query.all():
+			print a.version_num
+			db.session.delete(a)
+		db.session.commit()
 login_manager.anonymous_user=AnonymousUser
 db.event.listen(Post.body,'set',Post.on_changed_body)
 
