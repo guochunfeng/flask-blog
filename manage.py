@@ -40,8 +40,6 @@ def profile(length=25,profile_dir=None):
 	from werkzeug.contrib.profiler import ProfilerMiddleware
 	app.wagi_app=ProfilerMiddleware(app.wsgi_app,restrictions=[length],profile_dir=profile_dir)
 	app.run()
-if __name__=='__main__':
-	manager.run()
 @manager.command
 def deploy():
 	from flask.ext.migrate import upgrade
@@ -49,3 +47,5 @@ def deploy():
 	upgrade()
 	Role.insert_roles()
 	User.add_self_follows()
+if __name__=='__main__':
+	manager.run()
