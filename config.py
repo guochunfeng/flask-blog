@@ -53,7 +53,7 @@ class ProductionConfig(Config):
 		app.logger.addHandler(mail_handler)
 class HerokuConfig(ProductionConfig):
 	@classmethod
-	def init_app():
+	def init_app(cls,app):
 		ProductionConfig.init_app(app)
 		import logging
 		from logging import StreamHandler
