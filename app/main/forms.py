@@ -4,9 +4,6 @@ from wtforms import StringField,PasswordField,BooleanField,SubmitField,SelectFie
 from wtforms.validators import Required,Length,Regexp
 from flask.ext.pagedown import PageDown
 from flask.ext.pagedown.fields import PageDownField
-import sys  
-reload(sys)  
-sys.setdefaultencoding('utf8')
 class CommentForm(FlaskForm):
 	body=StringField('',validators=[Required()])
 	submit=SubmitField('提交评论')
