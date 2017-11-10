@@ -9,6 +9,7 @@ from flask.ext.login import login_user,login_required,current_user
 from ..decorators import admin_required,permission_required
 from ..models import Permission
 from flask.ext.sqlalchemy import get_debug_queries
+#编辑文章
 @main.route('/edit/<int:id>',methods=['GET','POST'])
 @login_required
 def edit(id):
@@ -18,11 +19,14 @@ def edit(id):
 	form=PostForm()
 	if form.validate_on_submit():
 		post.body=form.body.data
+		post.title=form.title.data
 		db.session.add(post)
-		flash('The post has been updated')
+		flash('文章已经编辑成功')
 		return redirect(url_for('.post',id=post.id))
 	form.body.data=post.body
+	form.title.data=post.title
 	return render_template('edit_post.html',form=form)
+#评论的路由
 @main.route('/post/<int:id>',methods=['GET','POST'])
 def post(id):
 	post=Post.query.get_or_404(id)
@@ -30,7 +34,7 @@ def post(id):
 	if form.validate_on_submit():
 		comment=Comment(body=form.body.data,post=post,author=current_user._get_current_object())
 		db.session.add(comment)
-		flash('Your comment has been published.')
+		flash('评论已经成功')
 		return redirect(url_for('.post',id=post.id,page=-1))
 	page=request.args.get('page',1,type=int)
 	if page==-1:
@@ -39,6 +43,17 @@ def post(id):
 	pagination=post.comments.order_by(Comment.timestamp.asc()).paginate(page,per_page=current_app.config['FLASK_COMMETS_PER_PAGE'],error_out=False)
 	comments=pagination.items
 	return render_template('post.html',posts=[post],form=form,comments=comments,pagination=pagination)
+#写博客的路由
+@main.route('/write_blog',methods=['GET','POST'])
+def write_blog():
+	form=PostForm()
+	if form.validate_on_submit():
+		post=Post(body=form.body.data,title=form.title.data,author=current_user._get_current_object())
+		db.session.add(post)
+		db.session.commit()
+		return redirect(url_for('.post',id=post.id))
+	return render_template('write_blog.html',form=form)
+#主页的路由
 @main.route('/',methods=['GET','POST'])
 def index():
 	form=PostForm()
@@ -58,6 +73,7 @@ def index():
 		per_page=current_app.config['FLASK_POSTS_PER_PAGE'],error_out=False)
 	posts=pagination.items
 	return render_template('index.html',form=form,posts=posts,pagination=pagination,show_followed=show_followed)
+#用户资料界面的路由
 @main.route('/user/<username>')
 def user(username):
 	user=User.query.filter_by(username=username).first()
@@ -65,6 +81,7 @@ def user(username):
 		abort(404)
 	posts=user.posts.order_by(Post.timestamp.desc()).all()
 	return render_template('user.html',user=user,posts=posts)
+#编辑个人信息的路由
 @main.route('/edit-profile',methods=['GET','POST'])
 @login_required
 def edit_profile():
@@ -74,12 +91,13 @@ def edit_profile():
 		current_user.location=form.location.data
 		current_user.about_me=form.about_me.data
 		db.session.add(current_user)
-		flash('Your profile has been updated')
+		flash('你的个人信息已经被修改成功')
 		return redirect(url_for('.user',username=current_user.username))
 	form.name.data=current_user.name
 	form.location.data=current_user.location
 	form.location.data=current_user.about_me
 	return render_template('edit_profile.html',form=form)
+#管理员编辑个人信息
 @main.route('/edit-profile/<int:id>',methods=['GET','POST'])
 @login_required
 @admin_required
@@ -105,6 +123,7 @@ def edit_profile_admin(id):
 	form.location.data=user.location
 	form.about_me.data=user.about_me
 	return render_template('edit_profile.html',form=form,user=user)
+#关注用户
 @main.route('/follow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -114,11 +133,12 @@ def follow(username):
 		flash('Invalid User')
 		return redirect(url_for('.index'))
 	if current_user.is_following(user):
-		flash('You are already following this user')
+		flash('你已经关注了')
 		return redirect(url_for('.user',username=username))
 	current_user.follow(user)
-	flash('You are now following %s'%username)
+	flash('成功关注 %s'%username)
 	return redirect(url_for('.user',username=username))
+#取消关注
 @main.route('/unfollow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -133,6 +153,7 @@ def unfollow(username):
 	current_user.unfollow(user)
 	flash('You are now unfollowing %s'%username)
 	return redirect(url_for('.user',username=username))
+#粉丝列表
 @main.route('/followers/<username>')
 def followers(username):
 	user=User.query.filter_by(username=username).first()
@@ -142,7 +163,9 @@ def followers(username):
 	page=request.args.get('page',1,type=int)
 	pagination=user.followers.paginate(page,per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],error_out=False)
 	follows=[{'user':item.follower,'timestamp':item.timestamp} for item in pagination.items]
-	return render_template('followers.html',user=user,title="Followers of",endpoint='.followers',pagination=pagination,follows=follows)
+	return render_template('followers.html',user=user,title="Followers of",endpoint='.followers',
+		pagination=pagination,follows=follows)
+#关注者列表
 @main.route('/followed/<username>')
 def followed(username):
 	user=User.query.filter_by(username=username).first()
@@ -152,19 +175,23 @@ def followed(username):
 	page=request.args.get('page',1,type=int)
 	pagination=user.followed.paginate(page,per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],error_out=False)
 	followed=[{'user':item.followed,'timestamp':item.timestamp} for item in pagination.items]
-	return render_template('followers.html',user=user,title="Followed ",endpoint='.followed',pagination=pagination,followed=followed)
+	return render_template('followers.html',user=user,title="Followed by ",endpoint='.followed',
+		pagination=pagination,follows=followed)
+#所有用户发表的文章
 @main.route('/all')
 @login_required
 def show_all():
 	resp=make_response(redirect(url_for('.index')))
 	resp.set_cookie('show_followed','',max_age=30*24*60*60)
 	return resp
+#所有关注用户发表的文章
 @main.route('/followed')
 @login_required
 def show_followed():
 	resp=make_response(redirect(url_for('.index')))
 	resp.set_cookie('show_followed','1',max_age=30*24*60*60)
 	return resp
+#管理员的管理评论
 @main.route('/moderate')
 @login_required
 @permission_required(Permission.MODERATE_COMMENTS)
@@ -174,6 +201,7 @@ def moderate():
 		per_page=current_app.config['FLASK_COMMETS_PER_PAGE'],error_out=Flase)
 	comments=pagination.items
 	return render_template('moderate.html',comments=comments,pagination=pagination,page=page)
+#管理员使评论可见
 @main.route('/moderate/enable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE_COMMENTS)
@@ -182,6 +210,7 @@ def moderate_enable(id):
 	comment.disabled=False
 	db.session.add(comment)
 	return redict(url_for('.moderate',page=request.args.get('page',1,type=int)))
+#管理员使评论不可见
 @main.route('/moderate/disable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE_COMMENTS)

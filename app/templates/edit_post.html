@@ -1,15 +1,24 @@
 {%extends "base.html"%}
-{%import "bootstrap/wtf.html" as wtf%}
-{%block title%} Flasky-Edit Post{%endblock%}
+{%block title%} Flask-编辑文章{%endblock%}
+{%block head%}
+{{super()}}
+<script src="{{ url_for('static', filename='ckeditor/ckeditor.js')}}"></script>
+{%endblock%}
 {%block page_content%}
 <div class="page-header">
-	<h1>Edit Post</h1>
+	<h1>编辑博客</h1>
 </div>
 <div>
-	{{wtf.quick_form(form)}}
-</div>
+	<form method="POST" >
+		{{form.hidden_tag()}}
+		<div>{{form.title.label}}
+		{{form.title() }}</div>
+		<div>
+		{{form.body(class="ckeditor")}}
+		{{form.submit()}}</div>
+	</form>
+<div>
 {%endblock%}
-{%block scripts%}
-{{super()}}
-{{pagedown.include_pagedown()}}
-{%endblock%}
+
+
+

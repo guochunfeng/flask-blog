@@ -1,0 +1,21 @@
+{%extends "base.html"%}
+{%block title%} 过春风-写文章{%endblock%}
+{%block head%}
+{{super()}}
+<script src="{{ url_for('static', filename='ckeditor/ckeditor.js')}}"></script>
+{%endblock%}
+{%block page_content%}
+<div class="page-header">
+	<h1>写博客</h1>
+</div>
+<div>
+	<form method="POST" >
+		{{form.hidden_tag()}}
+		<div>{{form.title.label}}
+		{{form.title()}}</div>
+		<div>
+		{{form.body(class="ckeditor")}}
+		{{form.submit()}}</div>
+	</form>
+<div>
+{%endblock%}
