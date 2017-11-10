@@ -1,3 +1,4 @@
+#-*- coding: UTF-8 -*-
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask.ext.login import UserMixin
@@ -109,7 +110,7 @@ class User(UserMixin,db.Model):
 	password_hash=db.Column(db.String(128))
 	confirmed=db.Column(db.Boolean,default=False)
 	name=db.Column(db.String(64))
-	location=db.Column(db.String(64))
+	location=db.Column(db.String(64),default='CN')
 	about_me=db.Column(db.Text())
 	member_since=db.Column(db.DateTime(),default=datetime.utcnow)
 	last_seen=db.Column(db.DateTime(),default=datetime.utcnow)
