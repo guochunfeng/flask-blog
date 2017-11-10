@@ -4,9 +4,6 @@ from wtforms import StringField,PasswordField,BooleanField,SubmitField,TextAreaF
 from wtforms.validators import Required,Length,Email,Regexp,EqualTo
 from wtforms import ValidationError
 from ..models import User
-import sys  
-reload(sys)  
-sys.setdefaultencoding('utf8')
 class LoginForm(FlaskForm):
 	email=StringField('邮件',validators=[Required(),Length(1,64),Email()])
 	password=PasswordField('密码',validators=[Required()])
