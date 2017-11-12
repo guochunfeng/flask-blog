@@ -34,10 +34,10 @@
 				{%endif%}
 			{%endif%}
 			<a href="{{url_for('.followers',username=user.username)}}">
-			粉丝:<span class="badge">{{user.followers.count()-1}}</span>
+			粉丝:<span class="badge">{{user.followers.count()}}</span>
 			</a>
 			<a href="{{url_for('.followed',username=user.username)}}">
-			关注:<span class="badge">{{user.followed.count()-1}}</span>
+			关注:<span class="badge">{{user.followed.count()}}</span>
 			</a>
 			{%if current_user.is_authenticated and user!=current_user and user.is_following(current_user)%}
 			|<span class="label label-default"> 被关注 </span>
