@@ -3,6 +3,7 @@ import os
 from threading import Thread
 from flask import current_app, render_template
 from flask_mail import Message
+from imp import reload
 from . import mail
 import sys
 reload(sys)
