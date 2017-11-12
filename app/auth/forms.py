@@ -19,15 +19,15 @@ class RegistrationForm(FlaskForm):
 	submit=SubmitField('注册')
 	def validate_email(self,field):
 		if User.query.filter_by(email=field.data).first():
-			raise ValidationError('Email already register.')
+			raise ValidationError('该邮箱已经注册')
 	def validate_username(self,field):
 		if User.query.filter_by(username=field.data).first():
-			raise ValidationError('Username already register')
+			raise ValidationError('该用户名已经注册')
 class PostForm (FlaskForm):
 	body=TextAreaField("What's on your mind",validators=[Required()])
 	submit=SubmitField('Submit')
 class ChangePasswordForm(FlaskForm):
-	email=StringField('Email',validators=[Required(),Length(1,64),Email()])
-	password=PasswordField('Password',validators=[Required()])
-	new_password=PasswordField('NewPassword',validators=[Required()])
-	submit=SubmitField('Submit')
+	email=StringField('邮箱',validators=[Required(),Length(1,64),Email()])
+	password=PasswordField('密码',validators=[Required()])
+	new_password=PasswordField('新的密码',validators=[Required()])
+	submit=SubmitField('提交')

@@ -16,8 +16,8 @@ class Config:
 	MAIL_SERVER='smtp.qq.com'
 	MAIL_PORT=25
 	MAIL_USE_TLS=True
-	MAIL_USERNAME='632131247@qq.com'
-	MAIL_PASSWORD='118899Shi'
+	MAIL_USERNAME=os.environ.get('MAIL_USERNAME')
+	MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD')
 	@staticmethod
 	def init_app(app):
 		pass

@@ -41,7 +41,7 @@ def login():
 @auth.route('/logout')
 def logout():
 	logout_user()
-	flash('You have been logged out')
+	flash('你已经退出账户')
 	return redirect(url_for('main.index'))
 @auth.route('/register',methods=['GET','POST'])
 def register():
