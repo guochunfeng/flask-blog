@@ -225,7 +225,7 @@ class User(UserMixin,db.Model):
 		if data.get('confirm')!=self.id:
 			return False
 		self.confirmed=True
-		add.session.add(self)
+		db.session.add(self)
 		return True 
 	def __repr__(self):
 		return '<User %r>' %self.username
